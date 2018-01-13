@@ -39,7 +39,7 @@ def get_duplicates(files_list):
 
 def show_duplicates(duplicates):
     for name, files in duplicates.items():
-        print(name + ': ')
+        print('{}: '.format(name))
         for file in files:
             print('\t* {}'.format(file))
         print('')
