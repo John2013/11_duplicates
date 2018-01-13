@@ -31,8 +31,9 @@ def get_duplicates(files_list):
     for file1 in files_list:
         for file2 in files_list:
             if are_duplicates(file1, file2):
-                duplicates[file1['name']].add(file1['path'])
-                duplicates[file1['name']].add(file2['path'])
+                key = "{} ({} б)".format(file1['name'], file1['size'])
+                duplicates[key].add(file1['path'])
+                duplicates[key].add(file2['path'])
 
     return duplicates
 
