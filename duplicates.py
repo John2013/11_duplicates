@@ -1,15 +1,15 @@
 import sys
 from collections import defaultdict
-from os.path import isdir, realpath, getsize
+from os.path import isdir, realpath, getsize, join
 from os import walk
 
 
 def get_files_recursively(path):
     files_list = []
 
-    for dir, ignored, files in walk(path):
-        for file_name in files:
-            path = realpath('{}/{}'.format(dir, file_name))
+    for dir_, _, file_names in walk(path):
+        for file_name in file_names:
+            path = realpath(join(dir_, file_name))
             files_list.append({
                 'name': file_name,
                 'path': path,
@@ -19,35 +19,29 @@ def get_files_recursively(path):
     return files_list
 
 
-def are_duplicates(file1, file2):
-    return file1['path'] != file2['path'] and file1['name'] == file2[
-        'name'
-    ] and file1['size'] == file2['size']
-
-
 def get_duplicates(files_list):
-    duplicates = defaultdict(set)
+    duplicates_dict = defaultdict(set)
 
-    for file1 in files_list:
-        for file2 in files_list:
-            if are_duplicates(file1, file2):
-                key = "{} ({} б)".format(file1['name'], file1['size'])
-                duplicates[key].add(file1['path'])
-                duplicates[key].add(file2['path'])
+    for file in files_list:
+        key = "{} ({} б)".format(file['name'], file['size'])
+        duplicates_dict[key].add(file['path'])
 
-    return duplicates
+    for key in list(duplicates_dict):
+        if len(duplicates_dict[key]) < 2:
+            del duplicates_dict[key]
+
+    return duplicates_dict
 
 
 def show_duplicates(duplicates):
-    for name, files in duplicates.items():
+    for name, file_paths in duplicates.items():
         print('{}: '.format(name))
-        for file in files:
-            print('\t* {}'.format(file))
+        for file_path in file_paths:
+            print('\t{}'.format(file_path))
         print('')
 
 
 if __name__ == '__main__':
-    dirpath = ''
     if len(sys.argv) > 1 and isdir(sys.argv[1]):
         dirpath = sys.argv[1]
     else:

@@ -7,13 +7,13 @@ example:
 $ python duplicates.py .
 Дубликаты:
 text1.txt (0 б):
-	* C:\Users\NaWashington\PycharmProjects\11_duplicates\test\text1.txt
-	* C:\Users\NaWashington\PycharmProjects\11_duplicates\test\dir1\dir11\text1.txt
-	* C:\Users\NaWashington\PycharmProjects\11_duplicates\test\dir2\text1.txt
+	C:\Users\NaWashington\PycharmProjects\11_duplicates\test\dir2\text1.txt
+	C:\Users\NaWashington\PycharmProjects\11_duplicates\test\dir1\dir11\text1.txt
+	C:\Users\NaWashington\PycharmProjects\11_duplicates\test\text1.txt
 
 text2.txt (2 б):
-	* C:\Users\NaWashington\PycharmProjects\11_duplicates\test\text2.txt
-	* C:\Users\NaWashington\PycharmProjects\11_duplicates\test\dir1\text2.txt
+	C:\Users\NaWashington\PycharmProjects\11_duplicates\test\dir1\text2.txt
+	C:\Users\NaWashington\PycharmProjects\11_duplicates\test\text2.txt
 
 ```
 
