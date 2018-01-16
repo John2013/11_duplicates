@@ -4,31 +4,25 @@ from os.path import isdir, realpath, getsize, join
 from os import walk
 
 
-def get_files_recursively(path):
-    files_list = []
+def get_files(path):
+    files_dict = defaultdict(set)
 
     for dir_path, _, file_names in walk(path):
         for file_name in file_names:
             path = realpath(join(dir_path, file_name))
-            files_list.append({
-                'name': file_name,
-                'path': path,
-                'size': getsize(path)
-            })
+            files_dict[
+                '{} ({} б)'.format(file_name, getsize(path))
+            ].add(path)
 
-    return files_list
+    return files_dict
 
 
-def get_duplicates(files_list):
-    duplicates_dict = defaultdict(set)
+def get_duplicates(files_dict):
+    duplicates_dict = {}
 
-    for file in files_list:
-        key = "{} ({} б)".format(file['name'], file['size'])
-        duplicates_dict[key].add(file['path'])
-
-    for key in list(duplicates_dict):
-        if len(duplicates_dict[key]) < 2:
-            del duplicates_dict[key]
+    for dict_key, path_list in files_dict.items():
+        if len(path_list) > 1:
+            duplicates_dict[dict_key] = path_list
 
     return duplicates_dict
 
@@ -47,6 +41,6 @@ if __name__ == '__main__':
     else:
         exit('Ошибка: Отсутствует путь к папке или папка не найдена')
 
-    files_list = get_files_recursively(dirpath)
+    files_dict = get_files(dirpath)
     print('Дубликаты:')
-    show_duplicates(get_duplicates(files_list))
+    show_duplicates(get_duplicates(files_dict))
