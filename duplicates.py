@@ -5,14 +5,14 @@ from os import walk
 
 
 def get_files(path):
-    files_dict = defaultdict(set)
+    files_dict = defaultdict(list)
 
     for dir_path, _, file_names in walk(path):
         for file_name in file_names:
             path = realpath(join(dir_path, file_name))
             files_dict[
                 '{} ({} б)'.format(file_name, getsize(path))
-            ].add(path)
+            ].append(path)
 
     return files_dict
 
@@ -21,6 +21,7 @@ def get_duplicates(files_dict):
     duplicates_dict = {}
 
     for dict_key, path_list in files_dict.items():
+        path_list = set(path_list)
         if len(path_list) > 1:
             duplicates_dict[dict_key] = path_list
 
